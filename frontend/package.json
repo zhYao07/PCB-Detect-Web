@@ -1,0 +1,42 @@
+{
+      "name": "pcb-detect-frontend",
+      "version": "0.1.0",
+      "private": true,
+      "dependencies": {
+            "@ant-design/icons": "^4.8.3",
+            "antd": "^4.24.16",
+            "axios": "^0.24.0",
+            "echarts": "^5.2.2",
+            "echarts-for-react": "^3.0.2",
+            "html2canvas": "^1.4.1",
+            "jspdf": "^3.0.1",
+            "jspdf-autotable": "^5.0.2",
+            "react": "^17.0.2",
+            "react-dom": "^17.0.2",
+            "react-scripts": "4.0.3",
+            "xlsx": "^0.18.5"
+      },
+      "scripts": {
+            "start": "react-scripts start",
+            "build": "react-scripts build",
+            "test": "react-scripts test",
+            "eject": "react-scripts eject"
+      },
+      "eslintConfig": {
+            "extends": [
+                  "react-app"
+            ]
+      },
+      "browserslist": {
+            "production": [
+                  ">0.2%",
+                  "not dead",
+                  "not op_mini all"
+            ],
+            "development": [
+                  "last 1 chrome version",
+                  "last 1 firefox version",
+                  "last 1 safari version"
+            ]
+      }
+}

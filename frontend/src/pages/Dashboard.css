@@ -1,0 +1,228 @@
+.app-container {
+      min-height: 100vh;
+}
+
+.header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-left {
+      display: flex;
+      align-items: center;
+}
+
+.logo {
+      height: 32px;
+      margin-right: 16px;
+}
+
+.header h1 {
+      margin: 0;
+      font-size: 20px;
+      color: #1890ff;
+}
+
+.header-right {
+      display: flex;
+      gap: 16px;
+}
+
+.header-icon {
+      font-size: 20px;
+      color: #666;
+      cursor: pointer;
+      transition: color 0.3s;
+}
+
+.header-icon:hover {
+      color: #1890ff;
+}
+
+/* 主要内容区域 */
+.content-layout {
+      display: flex;
+      padding: 24px;
+      gap: 24px;
+      background: #f0f2f5;
+}
+
+/* 左侧边栏 */
+.sidebar {
+      width: 280px;
+      background: #fff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.system-status {
+      margin-top: 24px;
+}
+
+.system-status h3 {
+      margin-bottom: 16px;
+      font-size: 16px;
+      color: #333;
+}
+
+.status-item {
+      margin-bottom: 16px;
+      padding: 12px;
+      background: #f5f5f5;
+      border-radius: 6px;
+}
+
+.status-item:last-child {
+      margin-bottom: 0;
+}
+
+.status-item span {
+      display: block;
+      margin-bottom: 8px;
+      color: #666;
+}
+
+/* 中间图片区域 */
+.image-section {
+      flex: 1;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+}
+
+.image-container {
+      flex: 1;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-height: 400px;
+}
+
+.upload-placeholder {
+      text-align: center;
+      padding: 48px;
+      background: #fafafa;
+      border: 2px dashed #d9d9d9;
+      border-radius: 8px;
+      cursor: pointer;
+}
+
+.upload-placeholder:hover {
+      border-color: #1890ff;
+}
+
+.detection-progress {
+      padding: 16px 24px;
+      background: #fafafa;
+      border-top: 1px solid #f0f0f0;
+}
+
+/* 右侧结果区域 */
+.results-section {
+      width: 320px;
+      background: #fff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.results-section h3 {
+      margin-bottom: 24px;
+      font-size: 16px;
+      color: #333;
+}
+
+.statistics {
+      margin-bottom: 24px;
+}
+
+.defects-list {
+      max-height: 300px;
+      overflow-y: auto;
+}
+
+.defect-item {
+      padding: 12px;
+      background: #f5f5f5;
+      border-radius: 6px;
+      margin-bottom: 12px;
+}
+
+.defect-item:last-child {
+      margin-bottom: 0;
+}
+
+/* 模型设置区域 */
+.model-section {
+      width: 280px;
+      background: #fff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.model-section h3 {
+      margin-bottom: 24px;
+      font-size: 16px;
+      color: #333;
+}
+
+.model-settings {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+}
+
+.threshold-settings {
+      margin-top: 24px;
+}
+
+.threshold-settings > div {
+      margin-bottom: 16px;
+}
+
+/* 添加其他必要的样式 */
+.sidebar {
+      width: 200px;
+      background: #fff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-section {
+      flex: 1;
+      margin: 0 24px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+}
+
+.results-section {
+      width: 300px;
+      background: #fff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.model-section {
+      width: 250px;
+      background: #fff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 其他必要的样式... */

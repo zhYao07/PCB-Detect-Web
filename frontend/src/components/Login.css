@@ -1,0 +1,356 @@
+.login-container {
+      min-height: 100vh;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+}
+
+/* 添加覆盖层以增强可读性 */
+.login-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to left,
+                  rgba(0, 20, 45, 0.4) 0%,
+                  rgba(0, 20, 45, 0.1) 100%);
+      z-index: 0;
+}
+
+.login-content {
+      width: 360px;
+      margin-right: 10%;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+}
+
+.login-header {
+      margin-bottom: 20px;
+      text-align: center;
+      width: 100%;
+}
+
+.login-header h1 {
+      color: white;
+      font-size: 18px;
+      font-weight: 500;
+      margin: 0;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      letter-spacing: 1px;
+      line-height: 1.4;
+}
+
+.login-subtitle {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      margin: 8px 0 0 0;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.5px;
+}
+
+.login-box {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 0 15px rgba(24, 144, 255, 0.1);
+      padding: 24px 24px 10px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      position: relative;
+      overflow: hidden;
+}
+
+/* 添加蓝色光边效果 */
+.login-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(to right, #1890ff, #73d13d, #1890ff);
+      background-size: 200% 100%;
+      animation: moveGradient 4s linear infinite;
+}
+
+@keyframes moveGradient {
+      0% {
+            background-position: 0% 0%;
+      }
+
+      100% {
+            background-position: 200% 0%;
+      }
+}
+
+.login-box:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(24, 144, 255, 0.2);
+}
+
+.login-tabs .ant-tabs-nav::before {
+      border-bottom: 1px solid #e8e8e8;
+}
+
+.login-tabs .ant-tabs-nav {
+      margin-bottom: 20px;
+}
+
+.login-tabs .ant-tabs-tab {
+      font-size: 15px;
+      padding: 8px 0;
+      margin: 0 16px;
+      transition: color 0.3s ease;
+      color: rgba(0, 0, 0, 0.65);
+}
+
+.login-tabs .ant-tabs-tab:hover {
+      color: #1890ff;
+}
+
+.login-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+      color: #1890ff;
+      font-weight: 500;
+}
+
+.login-tabs .ant-tabs-ink-bar {
+      background: linear-gradient(90deg, #1890ff, #73d13d);
+      height: 2px;
+      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.ant-form-item {
+      margin-bottom: 20px;
+}
+
+.ant-input-affix-wrapper {
+      height: 40px;
+      border-radius: 4px;
+      border: 1px solid #d9d9d9;
+      transition: all 0.3s ease;
+      background-color: rgba(255, 255, 255, 0.8);
+}
+
+.ant-input-affix-wrapper:hover,
+.ant-input-affix-wrapper-focused {
+      border-color: #1890ff;
+      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+      background-color: rgba(255, 255, 255, 0.95);
+}
+
+.ant-input-prefix {
+      color: #bfbfbf;
+      margin-right: 8px;
+      transition: color 0.3s ease;
+}
+
+.ant-input-affix-wrapper:hover .ant-input-prefix {
+      color: #1890ff;
+}
+
+/* 针对密码输入框的特殊样式 */
+.ant-input-password-icon {
+      color: #bfbfbf;
+      transition: all 0.3s ease;
+}
+
+.ant-input-password-icon:hover {
+      color: #1890ff;
+}
+
+.login-button {
+      height: 40px;
+      border-radius: 4px;
+      font-weight: 500;
+      background: linear-gradient(90deg, #1890ff, #40a9ff);
+      border: none;
+      box-shadow: 0 2px 6px rgba(24, 144, 255, 0.35);
+      transition: all 0.3s ease;
+      margin-top: 4px;
+      position: relative;
+      overflow: hidden;
+}
+
+.login-button::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(to bottom right,
+                  rgba(255, 255, 255, 0) 0%,
+                  rgba(255, 255, 255, 0.1) 50%,
+                  rgba(255, 255, 255, 0) 100%);
+      transform: rotate(45deg);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+}
+
+.login-button:hover {
+      background: linear-gradient(90deg, #40a9ff, #1890ff);
+      box-shadow: 0 4px 12px rgba(24, 144, 255, 0.45), 0 0 8px rgba(24, 144, 255, 0.2);
+      transform: translateY(-1px);
+}
+
+.login-button:hover::after {
+      opacity: 1;
+      animation: sweep 1.5s ease-in-out;
+}
+
+@keyframes sweep {
+      0% {
+            transform: translate(-50%, -50%) rotate(45deg);
+      }
+
+      100% {
+            transform: translate(150%, 150%) rotate(45deg);
+      }
+}
+
+.login-button:active {
+      background: #096dd9;
+      transform: translateY(1px);
+      box-shadow: 0 2px 6px rgba(24, 144, 255, 0.4);
+}
+
+/* 添加动态光效元素 */
+.light-effect {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: rgba(24, 144, 255, 0.5);
+      box-shadow: 0 0 12px rgba(24, 144, 255, 0.8), 0 0 20px rgba(24, 144, 255, 0.5);
+      pointer-events: none;
+      z-index: 2;
+      filter: blur(1px);
+      animation: float-light 8s ease-in-out infinite;
+}
+
+.light-effect:nth-child(1) {
+      top: 10%;
+      right: -10px;
+      animation-delay: 0s;
+}
+
+.light-effect:nth-child(2) {
+      bottom: 15%;
+      left: -10px;
+      animation-delay: 1s;
+}
+
+@keyframes float-light {
+
+      0%,
+      100% {
+            transform: translateY(0) translateX(0);
+            opacity: 0.7;
+      }
+
+      25% {
+            transform: translateY(-15px) translateX(10px);
+            opacity: 0.9;
+      }
+
+      50% {
+            transform: translateY(0) translateX(20px);
+            opacity: 0.7;
+      }
+
+      75% {
+            transform: translateY(15px) translateX(10px);
+            opacity: 0.9;
+      }
+}
+
+/* 响应式样式 */
+@media (max-width: 768px) {
+      .login-content {
+            margin-left: auto;
+            margin-right: auto;
+            width: 90%;
+            max-width: 360px;
+      }
+
+      .login-container {
+            justify-content: center;
+      }
+}
+
+.login-welcome {
+      text-align: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px dashed rgba(24, 144, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+}
+
+.login-welcome-icon {
+      color: #52c41a;
+      font-size: 18px;
+      margin-right: 8px;
+}
+
+.login-welcome p {
+      margin: 0;
+      color: rgba(0, 0, 0, 0.65);
+      font-size: 14px;
+}
+
+.login-footer {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(24, 144, 255, 0.2);
+      text-align: center;
+}
+
+.login-footer p {
+      margin: 5px 0;
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.45);
+}
+
+.highlight {
+      color: #1890ff;
+      font-weight: 500;
+}
+
+.version {
+      color: #722ed1;
+      font-weight: 500;
+      background: rgba(114, 46, 209, 0.1);
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 11px;
+}
+
+/* 注册按钮特殊样式 */
+.login-tabs .ant-tabs-tabpane[aria-hidden="false"] button.login-button {
+      background: linear-gradient(to right, #1890ff, #13c2c2);
+      border: none;
+      transition: all 0.3s;
+}
+
+.login-tabs .ant-tabs-tabpane[aria-hidden="false"]:nth-child(2) button.login-button {
+      background: linear-gradient(to right, #13c2c2, #52c41a);
+}
+
+.login-tabs .ant-tabs-tabpane[aria-hidden="false"] button.login-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(24, 144, 255, 0.4);
+}
+
+.login-tabs .ant-tabs-tabpane[aria-hidden="false"]:nth-child(2) button.login-button:hover {
+      box-shadow: 0 4px 12px rgba(82, 196, 26, 0.4);
+}

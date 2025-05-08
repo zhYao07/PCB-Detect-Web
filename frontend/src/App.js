@@ -14,11 +14,7 @@ import Login from './components/Login';
 const API_BASE_URL = (() => {
       const hostname = window.location.hostname;
       const protocol = window.location.protocol;
-      // 如果是localhost，使用localhost:5000
-      if (hostname === 'localhost' || hostname === '127.0.0.1') {
-            return `${protocol}//localhost:5000`;
-      }
-      // 否则使用当前hostname:5000
+      // 使用当前窗口访问的hostname构建API URL
       return `${protocol}//${hostname}:5000`;
 })();
 
@@ -28,7 +24,7 @@ axios.defaults.withCredentials = true; // 允许跨域请求携带凭证
 
 // 添加一个函数来更新API基础URL
 const updateApiBaseUrl = (ip) => {
-      const newBaseUrl = `http://${ip}:5000`;
+      const newBaseUrl = `${window.location.protocol}//${ip}:5000`;
       console.log(`更新API基础URL为: ${newBaseUrl}`);
       axios.defaults.baseURL = newBaseUrl;
 };

@@ -23,8 +23,14 @@ app = Flask(__name__,
            static_folder=FRONTEND_BUILD_DIR,
            static_url_path='')
 
-# 配置CORS
-CORS(app, supports_credentials=True)
+# 配置CORS - 使用更灵活的配置
+cors_config = {
+    "origins": ["*"],
+    "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"],
+    "supports_credentials": True
+}
+CORS(app, resources={r"/api/*": cors_config}, supports_credentials=True)
 
 # 添加错误处理
 @app.errorhandler(Exception)
@@ -244,8 +250,22 @@ def register_user():
     password = data.get('password')
     email = data.get('email')
     phone = data.get('phone')
+    
+    # 记录请求信息，便于调试
+    client_ip = request.remote_addr
+    origin = request.headers.get('Origin', 'Unknown')
+    logger.info(f"注册请求来自: {client_ip}, Origin: {origin}")
+    
     if not all([username, password, email, phone]):
-        return jsonify({'error': '缺少必填字段'}), 400
+        response = jsonify({'error': '缺少必填字段'})
+        origin = request.headers.get('Origin')
+        if origin:
+            response.headers.add('Access-Control-Allow-Origin', origin)
+        else:
+            response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        return response, 400
+    
     try:
         conn = sqlite3.connect('users.db')
         cursor = conn.cursor()
@@ -255,7 +275,16 @@ def register_user():
         )
         conn.commit()
         conn.close()
-        return jsonify({'status': 'success', 'message': '用户注册成功'}), 200
+        
+        response = jsonify({'status': 'success', 'message': '用户注册成功'})
+        origin = request.headers.get('Origin')
+        if origin:
+            response.headers.add('Access-Control-Allow-Origin', origin)
+        else:
+            response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        return response, 200
+    
     except sqlite3.IntegrityError as e:
         msg = '注册失败'
         err = str(e)
@@ -265,7 +294,15 @@ def register_user():
             msg = '邮箱已存在'
         elif 'phone' in err:
             msg = '手机号已存在'
-        return jsonify({'error': msg}), 400
+            
+        response = jsonify({'error': msg})
+        origin = request.headers.get('Origin')
+        if origin:
+            response.headers.add('Access-Control-Allow-Origin', origin)
+        else:
+            response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        return response, 400
 
 # User login endpoint
 @app.route('/api/login', methods=['POST'])
@@ -273,8 +310,15 @@ def login_user():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
+    
+    # 记录请求信息，便于调试
+    client_ip = request.remote_addr
+    origin = request.headers.get('Origin', 'Unknown')
+    logger.info(f"登录请求来自: {client_ip}, Origin: {origin}")
+    
     if not all([username, password]):
         return jsonify({'error': '缺少用户名或密码'}), 400
+    
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
     cursor.execute(
@@ -283,15 +327,69 @@ def login_user():
     )
     row = cursor.fetchone()
     conn.close()
+    
     if row:
         user_id, uname, email, phone = row
         # Generate token without TimedJSONWebSignatureSerializer
         s = Serializer(app.config['SECRET_KEY'])
         token = s.dumps({'user_id': user_id})
         user_info = {'id': user_id, 'username': uname, 'email': email, 'phone': phone}
-        return jsonify({'status': 'success', 'token': token, 'user': user_info}), 200
+        
+        response = jsonify({'status': 'success', 'token': token, 'user': user_info})
+        
+        # 设置CORS响应头，确保客户端可以正确接收响应
+        origin = request.headers.get('Origin')
+        if origin:
+            response.headers.add('Access-Control-Allow-Origin', origin)
+        else:
+            response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        
+        return response, 200
     else:
-        return jsonify({'error': '用户名或密码错误'}), 401
+        response = jsonify({'error': '用户名或密码错误'})
+        
+        # 设置CORS响应头，确保客户端可以正确接收错误响应
+        origin = request.headers.get('Origin')
+        if origin:
+            response.headers.add('Access-Control-Allow-Origin', origin)
+        else:
+            response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        
+        return response, 401
+
+# 添加CORS预检请求处理
+@app.route('/api/login', methods=['OPTIONS'])
+def handle_login_preflight():
+    response = jsonify({'status': 'ok'})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response
+
+@app.route('/api/register', methods=['OPTIONS']) 
+def handle_register_preflight():
+    response = jsonify({'status': 'ok'})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response
+
+# 添加全局CORS头处理
+@app.after_request
+def add_cors_headers(response):
+    origin = request.headers.get('Origin')
+    if origin:
+        response.headers.add('Access-Control-Allow-Origin', origin)
+    else:
+        response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+    return response
 
 if __name__ == '__main__':
     # 获取本机IP地址

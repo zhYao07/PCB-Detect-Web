@@ -1,6 +1,11 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = (() => {
+      // 始终使用当前窗口的location来构建API URL
+      const hostname = window.location.hostname;
+      const protocol = window.location.protocol;
+      return `${protocol}//${hostname}:5000/api`;
+})();
 
 // 创建axios实例
 const axiosInstance = axios.create({
@@ -42,7 +47,8 @@ export const login = async (username, password) => {
             }
             return response.data;
       } catch (error) {
-            throw error.response.data;
+            // 确保抛出的错误是标准对象
+            throw error.response?.data || { error: '登录失败，请检查网络或服务器状态' };
       }
 };
 
@@ -68,4 +74,4 @@ export const getCurrentUser = () => {
 };
 
 // 导出axios实例供其他服务使用
-export const api = axiosInstance; 
+export const api = axiosInstance;

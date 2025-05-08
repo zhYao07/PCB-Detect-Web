@@ -13,11 +13,13 @@ const Login = () => {
       const onFinish = async (values) => {
             setLoading(true);
             try {
+                  // 调用 login 函数并传递用户名和密码
                   await login(values.username, values.password);
                   message.success('登录成功！');
                   navigate('/dashboard');
             } catch (error) {
-                  message.error(error.error || '登录失败，请重试');
+                  // 确保 error 是标准对象
+                  message.error(error?.error || '登录失败，请重试');
             } finally {
                   setLoading(false);
             }
@@ -80,4 +82,4 @@ const Login = () => {
       );
 };
 
-export default Login; 
+export default Login;

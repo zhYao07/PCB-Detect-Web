@@ -6,14 +6,39 @@ import axios from 'axios';
 
 const { TabPane } = Tabs;
 
+// 创建一个独立的axios实例，不受全局配置影响
+const createAxiosInstance = () => {
+      const hostname = window.location.hostname;
+      const protocol = window.location.protocol;
+      const baseURL = `${protocol}//${hostname}:5000`;
+      console.log('Login组件使用的API地址:', baseURL);
+
+      // 在UI上显示当前使用的API地址（调试用）
+      window.currentApiUrl = baseURL;
+
+      return axios.create({
+            baseURL,
+            withCredentials: true
+      });
+};
+
 // Remove mock user data; use backend APIs for auth
 
 const Login = ({ onLoginSuccess }) => {
       const [activeTab, setActiveTab] = useState('login');
       const [loading, setLoading] = useState(false);
+      const [apiUrlInfo, setApiUrlInfo] = useState('');
       // Create separate form instances for login and register
       const [loginForm] = Form.useForm();
       const [registerForm] = Form.useForm();
+
+      // 获取并显示API URL信息
+      useEffect(() => {
+            const hostname = window.location.hostname;
+            const protocol = window.location.protocol;
+            const baseURL = `${protocol}//${hostname}:5000`;
+            setApiUrlInfo(`当前API地址: ${baseURL}`);
+      }, []);
 
       // Reset form fields when switching tabs
       useEffect(() => {
@@ -30,8 +55,17 @@ const Login = ({ onLoginSuccess }) => {
       // Real backend login
       const handleLogin = async (values) => {
             setLoading(true);
+            let axiosInstance;
             try {
-                  const response = await axios.post('http://localhost:5000/api/login', values);
+                  // 使用独立的axios实例发起请求
+                  axiosInstance = createAxiosInstance();
+                  console.log('开始登录请求，API地址:', axiosInstance.defaults.baseURL);
+
+                  // 添加超时和错误处理
+                  const response = await axiosInstance.post('/api/login', values, {
+                        timeout: 10000  // 10秒超时
+                  });
+
                   const data = response.data;
                   if (data.status === 'success') {
                         message.success('登录成功！');
@@ -42,8 +76,20 @@ const Login = ({ onLoginSuccess }) => {
                         message.error(data.error || '登录失败');
                   }
             } catch (error) {
-                  const errMsg = error.response?.data?.error || '登录失败，请重试';
-                  message.error(errMsg);
+                  console.error('登录请求出错:', error);
+
+                  // 详细的错误处理
+                  if (error.code === 'ECONNABORTED') {
+                        message.error('请求超时，服务器未响应');
+                  } else if (error.message && error.message.includes('Network Error')) {
+                        message.error(`网络错误: 无法连接到服务器 ${axiosInstance.defaults.baseURL}`);
+                  } else if (error.response) {
+                        // 服务器返回了错误状态码
+                        message.error(`服务器错误 (${error.response.status}): ${error.response.data.error || '未知错误'}`);
+                  } else {
+                        // 其他错误
+                        message.error(`登录失败: ${error.message || '未知错误'}`);
+                  }
             } finally {
                   setLoading(false);
             }
@@ -52,22 +98,42 @@ const Login = ({ onLoginSuccess }) => {
       // Real backend registration
       const handleRegister = async (values) => {
             setLoading(true);
+            let axiosInstance;
             try {
-                  // 调用注册接口
-                  await axios.post('http://localhost:5000/api/register', {
+                  // 调用注册接口，使用独立的axios实例
+                  axiosInstance = createAxiosInstance();
+                  console.log('开始注册请求，API地址:', axiosInstance.defaults.baseURL);
+
+                  // 添加超时和错误处理
+                  await axiosInstance.post('/api/register', {
                         username: values.username,
                         password: values.password,
                         email: values.email,
                         phone: values.phone
+                  }, {
+                        timeout: 10000 // 10秒超时
                   });
+
                   // 注册成功后跳转到登录标签
                   message.success('注册成功！请登录');
                   setActiveTab('login');
                   // 在切换到登录标签后，预填充表单字段
                   loginForm.setFieldsValue({ username: values.username, password: values.password });
             } catch (error) {
-                  const errMsg = error.response?.data?.error || '注册失败，请重试';
-                  message.error(errMsg);
+                  console.error('注册请求出错:', error);
+
+                  // 详细的错误处理
+                  if (error.code === 'ECONNABORTED') {
+                        message.error('请求超时，服务器未响应');
+                  } else if (error.message && error.message.includes('Network Error')) {
+                        message.error(`网络错误: 无法连接到服务器 ${axiosInstance.defaults.baseURL}`);
+                  } else if (error.response) {
+                        // 服务器返回了错误状态码
+                        message.error(`服务器错误 (${error.response.status}): ${error.response.data.error || '未知错误'}`);
+                  } else {
+                        // 其他错误
+                        message.error(`注册失败: ${error.message || '未知错误'}`);
+                  }
             } finally {
                   setLoading(false);
             }
@@ -84,6 +150,19 @@ const Login = ({ onLoginSuccess }) => {
                         <div className="login-header">
                               <h1>欢迎使用慧眼识瑕系统</h1>
                               <p className="login-subtitle">基于YOLOv11和投票融合的PCB缺陷检测系统</p>
+                        </div>
+
+                        {/* 添加API URL显示，用于调试 */}
+                        <div style={{
+                              padding: '5px 10px',
+                              background: 'rgba(0,0,0,0.6)',
+                              color: '#fff',
+                              borderRadius: '4px',
+                              marginBottom: '10px',
+                              fontSize: '12px',
+                              textAlign: 'center'
+                        }}>
+                              {apiUrlInfo}
                         </div>
 
                         <div className="login-box">

@@ -11,10 +11,20 @@ import './App.css';
 import Login from './components/Login';
 
 // 添加API基础URL配置
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_BASE_URL = (() => {
+      const hostname = window.location.hostname;
+      const protocol = window.location.protocol;
+      // 如果是localhost，使用localhost:5000
+      if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            return `${protocol}//localhost:5000`;
+      }
+      // 否则使用当前hostname:5000
+      return `${protocol}//${hostname}:5000`;
+})();
 
 // 配置axios默认值
 axios.defaults.baseURL = API_BASE_URL;
+axios.defaults.withCredentials = true; // 允许跨域请求携带凭证
 
 // 添加一个函数来更新API基础URL
 const updateApiBaseUrl = (ip) => {

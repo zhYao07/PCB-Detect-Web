@@ -5,12 +5,35 @@ from datetime import datetime
 import sqlite3
 from itsdangerous import URLSafeTimedSerializer as Serializer
 import torch
+import logging
+
+# 配置日志
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 # 导入多角度投票融合模型
 from v11 import YOLOv11Ensemble
 
-app = Flask(__name__, static_folder='frontend/build', static_url_path='')
-CORS(app)
+# 确保前端构建目录存在
+FRONTEND_BUILD_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'frontend', 'build')
+if not os.path.exists(FRONTEND_BUILD_DIR):
+    raise RuntimeError(f"前端构建目录不存在: {FRONTEND_BUILD_DIR}")
+
+app = Flask(__name__, 
+           static_folder=FRONTEND_BUILD_DIR,
+           static_url_path='')
+
+# 配置CORS
+CORS(app, supports_credentials=True)
+
+# 添加错误处理
+@app.errorhandler(Exception)
+def handle_error(error):
+    logger.error(f"发生错误: {str(error)}", exc_info=True)
+    return jsonify({
+        'error': str(error),
+        'status': 'error'
+    }), 500
 
 # Configure secret key for token generation
 app.config['SECRET_KEY'] = 'supersecretkey'
@@ -18,15 +41,22 @@ app.config['SECRET_KEY'] = 'supersecretkey'
 # 添加根路由，返回前端应用
 @app.route('/')
 def serve_frontend():
-    return send_from_directory(app.static_folder, 'index.html')
+    try:
+        return send_from_directory(app.static_folder, 'index.html')
+    except Exception as e:
+        logger.error(f"服务前端文件时出错: {str(e)}")
+        return jsonify({'error': '无法加载前端应用'}), 500
 
 # 添加通配符路由，处理前端路由
 @app.route('/<path:path>')
 def serve_static(path):
-    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-        return send_from_directory(app.static_folder, path)
-    else:
+    try:
+        if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+            return send_from_directory(app.static_folder, path)
         return send_from_directory(app.static_folder, 'index.html')
+    except Exception as e:
+        logger.error(f"服务静态文件时出错: {str(e)}")
+        return jsonify({'error': '无法加载静态文件'}), 500
 
 # Initialize users database
 def init_db():

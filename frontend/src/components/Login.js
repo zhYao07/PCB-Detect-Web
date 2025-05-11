@@ -11,10 +11,10 @@ const createAxiosInstance = () => {
       const hostname = window.location.hostname;
       const protocol = window.location.protocol;
       const baseURL = `${protocol}//${hostname}:5000`;
-      console.log('Login组件使用的API地址:', baseURL);
+      // console.log('Login组件使用的API地址:', baseURL);
 
       // 在UI上显示当前使用的API地址（调试用）
-      window.currentApiUrl = baseURL;
+      // window.currentApiUrl = baseURL;
 
       return axios.create({
             baseURL,
@@ -27,17 +27,12 @@ const createAxiosInstance = () => {
 const Login = ({ onLoginSuccess }) => {
       const [activeTab, setActiveTab] = useState('login');
       const [loading, setLoading] = useState(false);
-      const [apiUrlInfo, setApiUrlInfo] = useState('');
       // Create separate form instances for login and register
       const [loginForm] = Form.useForm();
       const [registerForm] = Form.useForm();
 
       // 获取并显示API URL信息
       useEffect(() => {
-            const hostname = window.location.hostname;
-            const protocol = window.location.protocol;
-            const baseURL = `${protocol}//${hostname}:5000`;
-            setApiUrlInfo(`当前API地址: ${baseURL}`);
       }, []);
 
       // Reset form fields when switching tabs
@@ -59,7 +54,7 @@ const Login = ({ onLoginSuccess }) => {
             try {
                   // 使用独立的axios实例发起请求
                   axiosInstance = createAxiosInstance();
-                  console.log('开始登录请求，API地址:', axiosInstance.defaults.baseURL);
+                  // console.log('开始登录请求，API地址:', axiosInstance.defaults.baseURL);
 
                   // 添加超时和错误处理
                   const response = await axiosInstance.post('/api/login', values, {
@@ -102,7 +97,7 @@ const Login = ({ onLoginSuccess }) => {
             try {
                   // 调用注册接口，使用独立的axios实例
                   axiosInstance = createAxiosInstance();
-                  console.log('开始注册请求，API地址:', axiosInstance.defaults.baseURL);
+                  // console.log('开始注册请求，API地址:', axiosInstance.defaults.baseURL);
 
                   // 添加超时和错误处理
                   await axiosInstance.post('/api/register', {
@@ -150,19 +145,6 @@ const Login = ({ onLoginSuccess }) => {
                         <div className="login-header">
                               <h1>欢迎使用慧眼识瑕系统</h1>
                               <p className="login-subtitle">基于YOLOv11和投票融合的PCB缺陷检测系统</p>
-                        </div>
-
-                        {/* 添加API URL显示，用于调试 */}
-                        <div style={{
-                              padding: '5px 10px',
-                              background: 'rgba(0,0,0,0.6)',
-                              color: '#fff',
-                              borderRadius: '4px',
-                              marginBottom: '10px',
-                              fontSize: '12px',
-                              textAlign: 'center'
-                        }}>
-                              {apiUrlInfo}
                         </div>
 
                         <div className="login-box">

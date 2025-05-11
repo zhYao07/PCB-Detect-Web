@@ -11,23 +11,14 @@ import './App.css';
 import Login from './components/Login';
 
 // 添加API基础URL配置
-const API_BASE_URL = (() => {
-      const hostname = window.location.hostname;
-      const protocol = window.location.protocol;
-      // 使用当前窗口访问的hostname构建API URL
-      return `${protocol}//${hostname}:5000`;
-})();
+const API_BASE_URL = `${window.location.protocol}//${window.location.host}`;
 
 // 配置axios默认值
 axios.defaults.baseURL = API_BASE_URL;
 axios.defaults.withCredentials = true; // 允许跨域请求携带凭证
 
 // 添加一个函数来更新API基础URL
-const updateApiBaseUrl = (ip) => {
-      const newBaseUrl = `${window.location.protocol}//${ip}:5000`;
-      console.log(`更新API基础URL为: ${newBaseUrl}`);
-      axios.defaults.baseURL = newBaseUrl;
-};
+
 
 const { Header, Sider, Content } = Layout;
 const { TabPane } = Tabs;
@@ -123,9 +114,6 @@ function App() {
                         });
 
                         // 如果后端返回了服务器IP地址，并且不是localhost，则更新API基础URL
-                        if (response.data.server_ip && response.data.server_ip !== '127.0.0.1') {
-                              updateApiBaseUrl(response.data.server_ip);
-                        }
                   } catch (error) {
                         console.error('Error fetching system status:', error);
                         message.error('系统状态更新失败');

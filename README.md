@@ -1,6 +1,6 @@
 # PCB缺陷检测系统
 
-这是一个基于YOLOv8的PCB缺陷检测系统，包含前端界面和后端API。
+这是一个基于YOLOv11的PCB缺陷检测系统，包含前端界面和后端API。
 
 ## 功能特点
 
@@ -15,8 +15,8 @@
 ## 系统要求
 
 - Windows 10/11 或 Linux 系统
-- Python 3.8+ 
-- Node.js 14+
+- Python 3.9+ 
+- Node.js 16+
 - npm 6+
 - CUDA支持的NVIDIA GPU（可选，用于加速检测）
 
@@ -25,11 +25,11 @@
 ### 1. 准备环境
 
 #### 安装Python环境
-1. 从[Python官网](https://www.python.org/downloads/)下载并安装Python 3.8或更高版本
+1. 从[Python官网](https://www.python.org/downloads/)下载并安装Python 3.9或更高版本
 2. 确保安装时勾选"Add Python to PATH"选项
 
 #### 安装Node.js和npm
-1. 从[Node.js官网](https://nodejs.org/)下载并安装Node.js 14或更高版本
+1. 从[Node.js官网](https://nodejs.org/)下载并安装Node.js 16或更高版本
 2. npm会随Node.js一起安装
 
 #### GPU支持（可选）
@@ -97,7 +97,7 @@ npm start
 
 ### 3. 访问系统
 
-打开浏览器访问 http://localhost:3000
+打开浏览器访问 http://localhost:5000
 
 ## 系统使用说明
 
@@ -154,7 +154,7 @@ npm start
 pcb-detect/
 ├── app.py              # 后端Flask应用
 ├── requirements.txt    # Python依赖
-├── best.pt            # YOLOv8模型文件
+├── best.pt            # YOLOv11模型文件
 ├── frontend/          # 前端React应用
 │   ├── src/
 │   │   ├── App.js

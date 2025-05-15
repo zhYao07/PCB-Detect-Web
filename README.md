@@ -12,6 +12,11 @@
 - 用户登录与注册功能
 - 批量检测与结果导出
 
+## 系统演示
+![image](https://github.com/user-attachments/assets/584d085a-dbcc-4425-af5f-f5af5b5e4316)
+![image](https://github.com/user-attachments/assets/99dcd05a-6762-4243-bf4c-952b1b6a35f9)
+
+
 ## 系统要求
 
 - Windows 10/11 或 Linux 系统

@@ -128,17 +128,14 @@ npm start
 
 1. **模型加载失败**
    - 确认`best.pt`文件位于正确位置
-   - 检查GPU驱动和CUDA版本是否兼容
+
 
 2. **前端无法连接后端**
    - 确认后端服务器已正常启动
    - 检查防火墙设置是否阻止了端口访问
 
-3. **检测速度慢**
-   - 如有GPU，确保CUDA正确安装
-   - 可尝试减小图像处理尺寸（在UI界面调整）
 
-4. **安装依赖失败**
+3. **安装依赖失败**
    - 尝试使用国内镜像源：`pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple`
    - 对于npm：`npm install --registry=https://registry.npm.taobao.org`
 
@@ -149,9 +146,6 @@ npm start
 - GPU加速可显著提高检测速度
 - 系统状态页面可帮助监控资源使用情况
 
-## 联系支持
-
-如有任何问题或需要技术支持，请联系项目维护人员。
 
 ## 文件结构
 
